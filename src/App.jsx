@@ -1,8 +1,7 @@
 import React from "react";
-import { LoginScreen } from "./components/auth/LoginScreen";
-
+import Login from "./pages/Login.jsx";
 function App() {
-  return <LoginScreen />;
+  return <Login />;
 }
 
 export default App;
