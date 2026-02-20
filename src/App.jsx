@@ -1,5 +1,7 @@
-import Login from "./pages/Login";
-
-export default function App() {
+import React from "react";
+import Login from "./pages/Login.jsx";
+function App() {
   return <Login />;
 }
+
+export default App;

@@ -3,7 +3,7 @@ import { apiFetch } from "./api";
 
 /**
  * LOGIN
- * - Según tu script, el backend espera multipart/form-data (curl -F).
+ * - Acepta FormData (como tu curl -F) y tu backend ya lo soporta.
  */
 export function login(username, password) {
   const form = new FormData();
@@ -35,6 +35,7 @@ export function refresh() {
 /**
  * LOGOUT
  * - Borra cookies del lado backend (Set-Cookie expirando).
+ * - Usamos apiFetch y si justo está expirado no pasa nada: backend igual limpia.
  */
 export function logout() {
   return apiFetch("/api/v1/auth/logout/", { method: "POST" });
