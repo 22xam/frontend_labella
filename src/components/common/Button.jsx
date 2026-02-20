@@ -1,5 +1,4 @@
 import React from "react";
-import { motion } from "framer-motion";
 
 export const Button = ({
   children,
@@ -20,8 +19,7 @@ export const Button = ({
   };
 
   return (
-    <motion.button
-      whileTap={{ scale: 0.98 }}
+    <button
       className={`${baseStyles} ${variants[variant]} ${className}`}
       disabled={disabled || isLoading}
       {...props}
@@ -34,6 +32,6 @@ export const Button = ({
           {children}
         </>
       )}
-    </motion.button>
+    </button>
   );
 };
