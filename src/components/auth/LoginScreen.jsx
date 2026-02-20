@@ -1,91 +1,92 @@
 import React, { useState } from "react";
-import { IdentifierStep } from "./IdentifierStep";
-import { PasswordStep } from "./PasswordStep";
-import { OtpStep } from "./OtpStep";
-import { SocialButtons } from "./SocialButtons";
-import { PasskeyButton } from "./PasskeyButton";
-import { Divider } from "../common/Divider";
+import { login, me } from "../../services/auth";
+import "./LoginScreen.css";
 
 export const LoginScreen = () => {
-  const [step, setStep] = useState("identifier");
-  const [identifier, setIdentifier] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [status, setStatus] = useState("");
 
-  const handleIdentifierSubmit = async (identifierValue) => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     setIsLoading(true);
-    setError(null);
-    setIdentifier(identifierValue);
+    setStatus("");
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      const method = identifierValue.includes("@") ? "password" : "otp";
-      setStep(method);
-    } catch {
-      setError("Error verificando identificador");
+      await login(username, password);
+      const user = await me();
+      setStatus(`Bienvenido, ${user?.username || username}.`);
+    } catch (error) {
+      setStatus(error.message || "No se pudo iniciar sesión.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const renderStep = () => {
-    switch (step) {
-      case "identifier":
-        return (
-          <IdentifierStep
-            onSubmit={handleIdentifierSubmit}
-            isLoading={isLoading}
-            error={error}
-          />
-        );
-      case "password":
-        return (
-          <PasswordStep
-            identifier={identifier}
-            onBack={() => setStep("identifier")}
-          />
-        );
-      case "otp":
-        return (
-          <OtpStep identifier={identifier} onBack={() => setStep("identifier")} />
-        );
-      default:
-        return null;
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-black">Uber</h1>
+    <main className="login-app">
+      <section className="login-phone">
+        <div className="login-brand">
+          <p className="login-eyebrow">Labella Drive</p>
+          <h1 className="login-title">Iniciar sesión</h1>
+          <p className="login-subtitle">Pantalla estilo Uber optimizada para celular.</p>
         </div>
 
-        <div className="relative h-40 mb-8 overflow-hidden rounded-2xl bg-gradient-to-r from-green-400 to-blue-500">
-          <div className="absolute inset-0 bg-black/10" />
+        <div className="login-hero">
+          <p className="login-hero-note">Viaja seguro</p>
+          <p className="login-hero-text">Tu próxima ruta empieza aquí.</p>
         </div>
 
-        <div>{renderStep()}</div>
+        <form onSubmit={handleSubmit} className="login-form">
+          <label className="login-field">
+            <span className="login-label">
+              👤 Usuario
+            </span>
+            <input
+              type="text"
+              placeholder="tu_usuario"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+              className="login-input"
+              autoComplete="username"
+              required
+            />
+          </label>
 
-        {step === "identifier" && (
-          <>
-            <Divider text="o continúa con" />
-            <SocialButtons />
-            <PasskeyButton />
-          </>
-        )}
+          <label className="login-field">
+            <span className="login-label">
+              🔒 Contraseña
+            </span>
+            <div className="login-password-row">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                className="login-input-password"
+                autoComplete="current-password"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((current) => !current)}
+                className="login-toggle"
+                aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+              >
+                {showPassword ? "🙈" : "👁️"}
+              </button>
+            </div>
+          </label>
 
-        <p className="text-center text-sm text-gray-600 mt-8">
-          Al continuar, aceptas nuestros{" "}
-          <a href="/terms" className="text-black underline">
-            Términos
-          </a>{" "}
-          y{" "}
-          <a href="/privacy" className="text-black underline">
-            Política de Privacidad
-          </a>
-        </p>
-      </div>
-    </div>
+          <button type="submit" disabled={isLoading} className="login-submit">
+            {isLoading ? "Ingresando..." : "Entrar"}
+          </button>
+
+          {status && <p className="login-status">{status}</p>}
+        </form>
+      </section>
+    </main>
   );
 };
