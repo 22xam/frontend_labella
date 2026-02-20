@@ -1,9 +1,11 @@
+import logo from "../../assets/img/logo.png";
+
 export default function TopBar({ username }) {
   return (
     <header className="mb-5 flex items-center justify-between">
       <div className="flex items-center gap-3">
-        <div className="grid h-11 w-11 place-items-center rounded-2xl border border-white/10 bg-white/5 backdrop-blur">
-          <span className="text-sm font-extrabold tracking-tight">LB&Y</span>
+        <div className="grid h-11 w-11 place-items-center overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur">
+          <img src={logo} alt="Logo La Bella y Yo" className="h-8 w-8 object-contain" />
         </div>
         <div>
           <p className="text-[11px] font-semibold tracking-[0.25em] text-neutral-400">
