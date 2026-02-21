@@ -78,7 +78,9 @@ async function tryLogoutSilently() {
       method: "POST",
       credentials: "include",
     });
-  } catch {}
+  } catch {
+    // noop
+  }
 }
 
 async function parseResponse(res) {
