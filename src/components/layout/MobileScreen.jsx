@@ -1,8 +1,8 @@
 export default function MobileScreen({
   children,
-  className = "",
-  glowClassName = "",
-  glowToneClassName = "bg-white",
+  className = "bg-gradient-to-b from-[#2a1020] via-[#190c1f] to-neutral-950",
+  glowClassName = "opacity-45",
+  glowToneClassName = "bg-fuchsia-300",
 }) {
   return (
     <div
