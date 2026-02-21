@@ -22,6 +22,8 @@ function mapProducto(raw) {
 
 function ensureArray(payload) {
   if (Array.isArray(payload)) return payload;
+  if (Array.isArray(payload?.data?.productos)) return payload.data.productos;
+  if (Array.isArray(payload?.productos)) return payload.productos;
   if (Array.isArray(payload?.results)) return payload.results;
   return [];
 }
