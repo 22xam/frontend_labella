@@ -5,6 +5,7 @@ import FooterMenu from "../components/navigation/FooterMenu";
 import PanelCard from "../components/ui/PanelCard";
 import { useFooterMenu } from "../hooks/useFooterMenu";
 import { getDashboardSnapshot } from "../services/dashboard";
+import ProductosPage from "./productos/ProductosPage";
 
 function ListItem({ title, right, subtitle }) {
   return (
@@ -52,15 +53,7 @@ export default function MainDashboard({ user, onLogout }) {
     }
 
     if (activeTab === "productos") {
-      return (
-        <PanelCard title="Productos" subtitle="Control de stock en tiempo real.">
-          <ul className="space-y-2">
-            {data.productos.map((item) => (
-              <ListItem key={item.id} title={item.nombre} right={`Stock ${item.stock}`} />
-            ))}
-          </ul>
-        </PanelCard>
-      );
+      return <ProductosPage />;
     }
 
     if (activeTab === "pedidos") {
@@ -112,7 +105,7 @@ export default function MainDashboard({ user, onLogout }) {
   return (
     <MobileScreen>
       <TopBar username={user?.username} />
-      <div className="space-y-3">{content}</div>
+      <div className="min-h-0 flex-1 overflow-y-auto pb-3">{content}</div>
       <FooterMenu activeTab={activeTab} onChange={setActiveTab} />
     </MobileScreen>
   );
