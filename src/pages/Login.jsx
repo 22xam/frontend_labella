@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { login, me } from "../services/auth";
 
-export default function Login() {
+export default function Login({ onSuccess }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -17,6 +17,7 @@ export default function Login() {
       await login(username, password);
       const user = await me();
       setStatus(`OK ✅ Bienvenido: ${user?.username || username || "usuario"}`);
+      onSuccess?.(user);
     } catch (err) {
       setStatus(`Error: ${err?.message || "No se pudo iniciar sesión."}`);
     } finally {
