@@ -2,7 +2,7 @@ import { apiFetch } from "./api";
 
 const PRODUCTOS_PATH = "/api/v1/productos/";
 const BUSCAR_PATH = "/api/v1/productos/buscar/";
-const MAX_PRODUCTOS = 10;
+const MAX_PRODUCTOS = 5;
 
 function toNumber(value) {
   const number = Number.parseFloat(value);
@@ -14,7 +14,7 @@ function mapProducto(raw) {
     id: raw.id ?? raw.pk ?? `${raw.numpro ?? ""}-${raw.codigo_barra ?? ""}`,
     codigo: raw.numpro ?? "-",
     descripcion: raw.descripcion ?? "Sin descripción",
-    precio: toNumber(raw.precio_lista_1),
+    precio: toNumber(raw.l1),
     codigoBarra: raw.codigo_barra ?? "",
     coddum: raw.coddum ?? "",
   };

@@ -1,11 +1,14 @@
 function ProductRow({ producto }) {
   return (
     <li className="rounded-2xl border border-white/10 bg-neutral-900/40 px-3 py-3">
-      <div className="grid grid-cols-[80px_1fr_84px] items-start gap-2 text-xs sm:text-sm">
+      <div className="grid grid-cols-[25px_minmax(0,1fr)_66px] items-start gap-2 text-xs sm:text-sm">
         <p className="font-semibold text-neutral-100">{producto.codigo}</p>
-        <p className="line-clamp-2 text-neutral-200">{producto.descripcion}</p>
+        <p className="line-clamp-3 text-neutral-200">{producto.descripcion}</p>
         <p className="text-right font-semibold text-emerald-300">
-          ${producto.precio.toLocaleString("es-AR", { minimumFractionDigits: 2 })}
+          $
+          {producto.precio.toLocaleString("es-AR", {
+            minimumFractionDigits: 2,
+          })}
         </p>
       </div>
     </li>
