@@ -27,11 +27,7 @@ export default function Login({ onLogin }) {
   const isOk = status.startsWith("OK");
 
   return (
-    <MobileScreen
-      className="bg-gradient-to-b from-[#2a1020] via-[#190c1f] to-neutral-950"
-      glowClassName="opacity-45"
-      glowToneClassName="bg-fuchsia-300"
-    >
+    <MobileScreen>
       <header className="mb-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -59,6 +55,25 @@ export default function Login({ onLogin }) {
           Iniciá sesión para continuar.
         </p>
       </header>
+
+
+      <div className="relative mb-5 overflow-hidden rounded-3xl border border-fuchsia-200/20 bg-white/10 p-4 backdrop-blur">
+        <div className="pointer-events-none absolute -right-14 -top-14 h-32 w-32 rounded-full bg-fuchsia-300/30 blur-2xl" />
+        <div className="pointer-events-none absolute -left-8 bottom-0 h-20 w-20 rounded-full bg-violet-300/20 blur-xl" />
+        <div className="relative flex items-center justify-between">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-fuchsia-100/70">
+              Seguridad activa
+            </p>
+            <p className="mt-1 text-sm text-fuchsia-50">
+              Acceso cifrado y monitoreado en tiempo real.
+            </p>
+          </div>
+          <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-fuchsia-100/30 bg-fuchsia-100/15 text-lg shadow-[0_0_35px_rgba(245,208,254,0.25)]">
+            ✨
+          </span>
+        </div>
+      </div>
 
       <section className="rounded-3xl border border-fuchsia-200/20 bg-white/10 p-5 backdrop-blur">
         <form onSubmit={onSubmit} className="space-y-4">
@@ -110,7 +125,7 @@ export default function Login({ onLogin }) {
           <button
             type="submit"
             disabled={isLoading}
-            className="mt-2 w-full rounded-2xl bg-fuchsia-100 px-4 py-3 text-sm font-semibold text-fuchsia-950 transition active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
+            className="mt-2 w-full rounded-2xl bg-gradient-to-r from-fuchsia-100 via-rose-100 to-fuchsia-200 px-4 py-3 text-sm font-semibold text-fuchsia-950 shadow-[0_12px_28px_rgba(244,114,182,0.22)] transition hover:brightness-105 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
           >
             {isLoading ? "Ingresando..." : "Entrar"}
           </button>
