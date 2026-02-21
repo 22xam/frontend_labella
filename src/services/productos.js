@@ -10,13 +10,29 @@ function toNumber(value) {
 }
 
 function mapProducto(raw) {
+  const barcode =
+    raw?.codes?.barcode ??
+    raw?.codigoBarra ??
+    raw?.codigo_barra ??
+    "";
+
+  const dum =
+    raw?.codes?.dum ??
+    raw?.dum ??
+    raw?.coddum ??
+    raw?.cod_dum ??
+    "";
+
+  const descripcion = raw?.descripcion ?? raw?.displayName ?? "Sin descripción";
+
   return {
-    id: raw.id ?? raw.pk ?? `${raw.numpro ?? ""}-${raw.codigo_barra ?? ""}`,
-    codigo: raw.numpro ?? "-",
-    descripcion: raw.descripcion ?? "Sin descripción",
-    precio: toNumber(raw.l1),
-    codigoBarra: raw.codigo_barra ?? "",
-    coddum: raw.coddum ?? "",
+    id: raw?.id ?? raw?.pk ?? raw?.numpro ?? `${raw?.numpro ?? ""}-${barcode}`,
+    codigo: raw?.numpro ?? "-",
+    descripcion: String(descripcion).trim(),
+    // ✅ L1 viene dentro de: prices.list.l1
+    precio: toNumber(raw?.prices?.list?.l1),
+    codigoBarra: String(barcode).trim(),
+    coddum: String(dum).trim(),
   };
 }
 
