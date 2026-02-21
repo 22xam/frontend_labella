@@ -2,7 +2,7 @@ import { apiFetch } from "./api";
 
 const PRODUCTOS_PATH = "/api/v1/productos/";
 const BUSCAR_PATH = "/api/v1/productos/buscar/";
-const MAX_PRODUCTOS = 5;
+const PAGE_SIZE = 5;
 
 function toNumber(value) {
   const number = Number.parseFloat(value);
@@ -44,6 +44,19 @@ function ensureArray(payload) {
   return [];
 }
 
+function getPagination(payload) {
+  const pagination = payload?.data?.pagination ?? payload?.pagination;
+
+  const page = Number.parseInt(pagination?.page, 10);
+  const totalPages = Number.parseInt(pagination?.totalPages, 10);
+
+  return {
+    page: Number.isFinite(page) && page > 0 ? page : 1,
+    pageSize: PAGE_SIZE,
+    totalPages: Number.isFinite(totalPages) && totalPages > 0 ? totalPages : 1,
+  };
+}
+
 function filterProductos(productos, term) {
   const value = term.trim().toLowerCase();
   if (!value) return productos;
@@ -57,22 +70,45 @@ function filterProductos(productos, term) {
 
 export async function getProductos() {
   const data = await apiFetch(PRODUCTOS_PATH);
-  return ensureArray(data).map(mapProducto).slice(0, MAX_PRODUCTOS);
+  return {
+    items: ensureArray(data).map(mapProducto).slice(0, PAGE_SIZE),
+    pagination: {
+      page: 1,
+      pageSize: PAGE_SIZE,
+      totalPages: 1,
+    },
+  };
 }
 
-export async function searchProductos(term) {
+export async function searchProductos(term, page = 1) {
   const value = term.trim();
   if (!value) {
     return getProductos();
   }
 
-  const query = new URLSearchParams({ q: value });
+  const query = new URLSearchParams({
+    q: value,
+    page: String(page),
+    pageSize: String(PAGE_SIZE),
+  });
 
   try {
     const data = await apiFetch(`${BUSCAR_PATH}?${query.toString()}`);
-    return ensureArray(data).map(mapProducto).slice(0, MAX_PRODUCTOS);
+    return {
+      items: ensureArray(data).map(mapProducto),
+      pagination: getPagination(data),
+    };
   } catch {
     const productos = await getProductos();
-    return filterProductos(productos, value).slice(0, MAX_PRODUCTOS);
+    const filtered = filterProductos(productos.items, value);
+
+    return {
+      items: filtered.slice(0, PAGE_SIZE),
+      pagination: {
+        page: 1,
+        pageSize: PAGE_SIZE,
+        totalPages: 1,
+      },
+    };
   }
 }
