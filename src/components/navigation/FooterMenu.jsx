@@ -16,8 +16,8 @@ const MENU = [
 
 export default function FooterMenu({ activeTab, onChange }) {
   return (
-    <footer className="mt-auto pt-4">
-      <nav className="grid grid-cols-5 gap-1 rounded-3xl border border-white/10 bg-neutral-900/80 p-2 backdrop-blur">
+    <footer className="sticky bottom-0 mt-auto pt-4">
+      <nav className="grid grid-cols-5 gap-1 rounded-3xl border border-white/10 bg-neutral-900/90 p-2 backdrop-blur">
         {MENU.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
